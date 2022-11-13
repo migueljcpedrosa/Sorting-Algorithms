@@ -1,7 +1,10 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
+
 using namespace std;
 
+/*Comparative based*/
 void insertionSort(vector<int> &v)
 {
     for (int i = 1; i < v.size(); i++)
@@ -185,6 +188,35 @@ void quickSort(vector<int> &v, int left, int right)
     }
 }
 
+/*Non-comparative based*/
+void countingSort(vector<int> &v)
+{
+    if (v.empty())
+    {
+        return;
+    }
+
+    auto min_max = std::minmax_element(v.begin(), v.end());
+    int min = *min_max.first;
+    int max = *min_max.second;
+    vector<int> count((max - min) + 1, 0);
+
+    for (auto v1 : v)
+    {
+        count[v1 - min]++;
+    }
+
+    int i = 0;
+    for (auto c = 0; c < count.size(); c++)
+    {
+        for (auto j = 0; j < count[c]; j++)
+        {
+            v[i] = c + min;
+            i++;
+        }
+    }
+}
+
 void printVector(vector<int> &v)
 {
     cout << "[ ";
@@ -206,7 +238,8 @@ int main() {
     //selectionSort(v);
     //bubbleSort(v);
     //mergeSort(v, tempV, left, right);
-    quickSort(v1, 0, v1.size());
+    //quickSort(v1, 0, v1.size());
+    countingSort(v1);
     printVector(v1);
     return 0;
 }
